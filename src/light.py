@@ -1,3 +1,5 @@
+import pyhula
+
 class Light:
     class Modes:
         STEADY = 1
