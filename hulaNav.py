@@ -2,6 +2,13 @@ import pyhula
 from src import Light
 
 class Drone:
+    class Directions:
+        FORWARD = 1
+        BACKWARD = 2
+        LEFT = 3
+        RIGHT = 4
+        UP = 5
+        DOWN = 6
     def __init__(self):
         self.x = 0
         self.y = 0
@@ -36,9 +43,33 @@ class Drone:
 
         print(f"Flying to coordinates: ({d_x}, {d_y}, {d_z})")
 
+    def fly_relative(self, x, y, z, curved=False):
+        self.light.set_colour(Light.Colours.GREEN)
+        if curved:
+            self.api.single_fly_curvilinearFlight(x, y, z, led=self.light.get_dict())
+        else:
+            self.api.single_fly_straight_flight(x, y, z, led=self.light.get_dict())
+
+        print(f"Flying to coordinates: ({x}, {y}, {z})")
+
     def rotate(self, angle):
         self.light.set_colour(Light.Colours.GREEN)
         self.api.single_fly_autogyration360(1 / angle, led=self.light.get_dict())
+
+    def move(self, direction: Directions, distance: float):
+        self.light.set_colour(Light.Colours.GREEN)
+        if direction == self.Directions.FORWARD:
+            self.api.single_fly_straight_flight(distance, 0, 0, led=self.light.get_dict())
+        elif direction == self.Directions.BACKWARD:
+            self.api.single_fly_straight_flight(-distance, 0, 0, led=self.light.get_dict())
+        elif direction == self.Directions.LEFT:
+            self.api.single_fly_straight_flight(0, -distance, 0, led=self.light.get_dict())
+        elif direction == self.Directions.RIGHT:
+            self.api.single_fly_straight_flight(0, distance, 0, led=self.light.get_dict())
+        elif direction == self.Directions.UP:
+            self.api.single_fly_straight_flight(0, 0, distance, led=self.light.get_dict())
+        elif direction == self.Directions.DOWN:
+            self.api.single_fly_straight_flight(0, 0, -distance, led=self.light.get_dict())
 
     def takeoff(self):
         self.light.set_colour(Light.Colours.RED, mode=Light.Modes.BLINK)

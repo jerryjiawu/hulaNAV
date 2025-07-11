@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pyhula API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #34495e;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav h3 {
+            color: #34495e;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .nav-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .nav-link {
+            padding: 8px 15px;
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.2s ease;
+            font-weight: 400;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(45deg, #7f8c8d, #95a5a6);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            color: white;
+            padding: 18px;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+
+        .function {
+            border-bottom: 1px solid #ecf0f1;
+            padding: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .function:last-child {
+            border-bottom: none;
+        }
+
+        .function:hover {
+            background: #f8f9fa;
+            transform: translateX(3px);
+        }
+
+        .function-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+        }
+
+        .function-description {
+            color: #5d6d7e;
+            margin-bottom: 15px;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .parameters, .returns {
+            margin-bottom: 15px;
+        }
+
+        .parameters h4, .returns h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1em;
+            font-weight: 500;
+        }
+
+        .parameter {
+            background: #f8f9fa;
+            padding: 8px 12px;
+            margin: 5px 0;
+            border-left: 3px solid #95a5a6;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .parameter-name {
+            font-weight: 500;
+            color: #2c3e50;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+        }
+
+        .parameter-desc {
+            color: #5d6d7e;
+            margin-left: 10px;
+        }
+
+        .return-value {
+            background: #f0fff4;
+            padding: 8px 12px;
+            border-left: 3px solid #27ae60;
+            border-radius: 0 4px 4px 0;
+            color: #2c3e50;
+        }
+
+        .code-snippet {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            margin-top: 10px;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+
+        .toc {
+            position: sticky;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #95a5a6;
+            color: white;
+            border-radius: 10px;
+            font-size: 0.75em;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .highlight {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .function {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚁 Pyhula API Documentation</h1>
+            <p>Complete reference for drone control, computer vision, and sensor operations</p>
+        </div>
+
+        <div class="nav">
+            <h3>Quick Navigation</h3>
+            <div class="nav-links">
+                <a href="#system" class="nav-link">System Control</a>
+                <a href="#flight" class="nav-link">Flight Control</a>
+                <a href="#vision" class="nav-link">Computer Vision</a>
+                <a href="#sensors" class="nav-link">Sensors & Status</a>
+                <a href="#hardware" class="nav-link">Hardware Control</a>
+                <a href="#media" class="nav-link">Camera & Media</a>
+            </div>
+        </div>
+
+        <div id="system" class="section">
+            <div class="section-header">
+                🔧 System Configuration & Connection
+            </div>
+            
+            <div class="function">
+                <div class="function-name">connect(server_ip=None)</div>
+                <div class="function-description">
+                    Establishes connection between host computer and drone. The host computer acts as server.
+                </div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">server_ip</span>
+                        <span class="parameter-desc">(Optional) Drone IPv4 address, auto-detected if not provided</span>
+                    </div>
+                </div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">True: Success, False: Failure</div>
+                </div>
+                <div class="code-snippet">
+# Connect to drone (auto-detect IP)
+drone = UserApi()
+if drone.connect():
+    print("✅ Connected successfully!")
+else:
+    print("❌ Connection failed")
+                </div>
+            </div>
+        </div>
+
+        <div id="flight" class="section">
+            <div class="section-header">
+                ✈️ Flight Control Methods
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_takeoff(led=0) <span class="badge">Essential</span></div>
+                <div class="function-description">
+                    Real-time control for drone takeoff. Initiates flight mode and lifts drone from ground.
+                </div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">led</span>
+                        <span class="parameter-desc">LED configuration: {'r':0,'g':0,'b':0,'mode':1} - r,g,b: colors, mode: 1/steady, 2/off, 4/RGB cycle, 16/rainbow, 32/blink, 64/breathing</span>
+                    </div>
+                </div>
+                <div class="code-snippet">
+# Take off with blue LED
+drone.single_fly_takeoff({'r':0,'g':0,'b':255,'mode':1})
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_touchdown(led=0) <span class="badge">Essential</span></div>
+                <div class="function-description">
+                    Real-time control for drone landing. Safely lands drone and stops propellers.
+                </div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">led</span>
+                        <span class="parameter-desc">LED configuration (same format as takeoff)</span>
+                    </div>
+                </div>
+                <div class="code-snippet">
+# Land with red LED
+drone.single_fly_touchdown({'r':255,'g':0,'b':0,'mode':32})
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_curvilinearFlight(x, y, z, direction=True, led=0) <span class="badge">Advanced</span></div>
+                <div class="function-description">
+                    <span class="highlight">Curvilinear flight</span> allows the drone to fly in smooth curved paths to specified coordinates. This enables predictable 3D curved trajectories perfect for visualization and path planning.
+                </div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">x</span>
+                        <span class="parameter-desc">x-axis coordinate (cm) - aircraft left/right, right is positive</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">y</span>
+                        <span class="parameter-desc">y-axis coordinate (cm) - aircraft forward/backward, forward is positive</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">z</span>
+                        <span class="parameter-desc">z-axis coordinate (cm) - aircraft up/down, up is positive</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">direction</span>
+                        <span class="parameter-desc">True: counterclockwise, False: clockwise (default True)</span>
+                    </div>
+                </div>
+                <div class="code-snippet">
+# Curved flight: 100cm forward, 50cm right, 20cm up, counterclockwise
+drone.single_fly_curvilinearFlight(50, 100, 20, True)
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_forward(distance, led=0)</div>
+                <div class="function-description">Real-time control for drone flying forward.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">distance</span>
+                        <span class="parameter-desc">flight distance (cm)</span>
+                    </div>
+                </div>
+                <div class="code-snippet">drone.single_fly_forward(100)  # Move 100cm forward</div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_back(distance, led=0)</div>
+                <div class="function-description">Real-time control for drone flying backward.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">distance</span>
+                        <span class="parameter-desc">flight distance (cm)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_left(distance, led=0)</div>
+                <div class="function-description">Real-time control for drone flying left.</div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_right(distance, led=0)</div>
+                <div class="function-description">Real-time control for drone flying right.</div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_up(height, led=0)</div>
+                <div class="function-description">Real-time control for drone flying up.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">height</span>
+                        <span class="parameter-desc">flight height (cm)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_down(height, led=0)</div>
+                <div class="function-description">Real-time control for drone flying down.</div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_turnleft(angle, led=0)</div>
+                <div class="function-description">Real-time control for drone turning left.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">angle</span>
+                        <span class="parameter-desc">rotation angle (degrees)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_turnright(angle, led=0)</div>
+                <div class="function-description">Real-time control for drone turning right.</div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_straight_flight(x, y, z, led=0)</div>
+                <div class="function-description">Direct straight flight to coordinates.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">x, y, z</span>
+                        <span class="parameter-desc">coordinate positions (cm)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_radius_around(radius, led=0)</div>
+                <div class="function-description">Radius orbit flight around current position.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">radius</span>
+                        <span class="parameter-desc">orbit radius (cm, positive: counterclockwise, negative: clockwise)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_autogyration360(num, led=0)</div>
+                <div class="function-description">Clockwise/counterclockwise rotation for specified number of turns.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">num</span>
+                        <span class="parameter-desc">number of turns (positive: counterclockwise, negative: clockwise)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_somersault(direction, led=0)</div>
+                <div class="function-description">Drone performs forward/backward/left/right roll in place.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">direction</span>
+                        <span class="parameter-desc">0=forward, 1=back, 2=left, 3=right</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_bounce(frequency, height, led=0)</div>
+                <div class="function-description">Real-time control for drone bouncing motion.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">frequency</span>
+                        <span class="parameter-desc">number of bounces</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">height</span>
+                        <span class="parameter-desc">bounce distance (cm)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_hover_flight(time, led=0)</div>
+                <div class="function-description">Drone hover in place for specified duration.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">time</span>
+                        <span class="parameter-desc">hover time (seconds)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_barrier_aircraft(mode)</div>
+                <div class="function-description">Enable or disable obstacle avoidance system.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">mode</span>
+                        <span class="parameter-desc">True: enable, False: disable</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_Line_walking(fun_id, dist, way_color)</div>
+                <div class="function-description">Line following detection and navigation.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">fun_id</span>
+                        <span class="parameter-desc">0: forward line following, ignore intersections</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">dist</span>
+                        <span class="parameter-desc">distance, unit cm</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">way_color</span>
+                        <span class="parameter-desc">line following color range, 0-black 255-white</span>
+                    </div>
+                </div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">result: 0-failed, 1-success, 2-success encountered intersection</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="vision" class="section">
+            <div class="section-header">
+                👁️ Computer Vision & AI Recognition
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_AiIdentifies(mode) <span class="badge">AI</span></div>
+                <div class="function-description">
+                    Advanced AI-powered tag and marker identification system. Recognizes numbers, arrows, and letters.
+                </div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">mode</span>
+                        <span class="parameter-desc">0-9: identify number tags, 10-13: arrows (left/right/up/down), 20: end task, 65-90: uppercase letters A-Z</span>
+                    </div>
+                </div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">x, y, z: tag coordinates relative to drone<br>angle: angle between tag and drone<br>result: True/False for success/failure</div>
+                </div>
+                <div class="code-snippet">
+# Identify number tag 5
+result = drone.single_fly_AiIdentifies(5)
+if result['result']:
+    print(f"Found tag at: {result['x']}, {result['y']}, {result['z']}")
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_Optical_flow_alignment(qr_id, qr_size, angle=0)</div>
+                <div class="function-description">Optical flow alignment with QR code for precise positioning.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">qr_id</span>
+                        <span class="parameter-desc">target QR code id [0-9]</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">qr_size</span>
+                        <span class="parameter-desc">physical size of QR code, range [6, 30], unit: cm</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">angle</span>
+                        <span class="parameter-desc">align with QR code and rotate n degrees</span>
+                    </div>
+                </div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">result: True/False for alignment success/failure</div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_Optical_flow_recognition(qr_id, qr_size)</div>
+                <div class="function-description">Optical flow recognition of QR code with distance measurements.</div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">Dictionary: {result, x, y, z, yaw, qr_id} - distances and angles to QR code</div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_Anticipatory_recognition(qr_id)</div>
+                <div class="function-description">Forward camera QR code recognition.</div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_Proactive_alignment(qr_id)</div>
+                <div class="function-description">Forward camera QR code alignment.</div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_track_Qrcode(qr_id, time)</div>
+                <div class="function-description">Track specified QR code for given duration.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">qr_id</span>
+                        <span class="parameter-desc">QR code id [0-9]</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">time</span>
+                        <span class="parameter-desc">tracking duration (seconds)</span>
+                    </div>
+                </div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">result: 0=failed, 1=successful</div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_getColor(Mode=1)</div>
+                <div class="function-description">Color recognition from current video stream frame.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">Mode</span>
+                        <span class="parameter-desc">1: start, process one frame</span>
+                    </div>
+                </div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">r,g,b: color values, state: 0=failed, 1=successful</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sensors" class="section">
+            <div class="section-header">
+                📊 Sensors & Status Monitoring
+            </div>
+
+            <div class="function">
+                <div class="function-name">get_coordinate() <span class="badge">Essential</span></div>
+                <div class="function-description">Get current drone 3D coordinates for position tracking.</div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">[x, y, z] coordinate array</div>
+                </div>
+                <div class="code-snippet">
+pos = drone.get_coordinate()
+print(f"Drone position: X={pos[0]}, Y={pos[1]}, Z={pos[2]}")
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">get_yaw()</div>
+                <div class="function-description">Get drone orientation angles in degrees.</div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">[yaw angle, pitch angle, roll angle]</div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">get_plane_distance() <span class="badge">ToF</span></div>
+                <div class="function-description">
+                    Get drone <span class="highlight">ToF (Time of Flight) height</span> - precise ground-relative altitude measurement using laser/infrared sensors.
+                </div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">integer: drone ToF height (cm) - accurate to within 1-3cm</div>
+                </div>
+                <div class="code-snippet">
+height = drone.get_plane_distance()
+print(f"Height above ground: {height}cm")
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">get_battery()</div>
+                <div class="function-description">Get drone battery percentage for flight safety monitoring.</div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">integer: battery percentage (0-100)</div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">get_accelerated_speed()</div>
+                <div class="function-description">Get drone acceleration measurements for motion analysis.</div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">[X, Y, Z] acceleration values</div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">get_plane_speed()</div>
+                <div class="function-description">Get drone body velocity in all three axes.</div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">[X, Y, Z] velocity values</div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">get_plane_id()</div>
+                <div class="function-description">Get unique drone identifier.</div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">integer: drone ID</div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">Plane_getBarrier()</div>
+                <div class="function-description">Get comprehensive obstacle avoidance sensor data.</div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">Dictionary: {'forward': True/False, 'back': True/False, 'left': True/False, 'right': True/False}</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="hardware" class="section">
+            <div class="section-header">
+                🔧 Hardware Control & Accessories
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_lamplight(r, g, b, time, mode)</div>
+                <div class="function-description">Control drone LED lighting system with various effects.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">r, g, b</span>
+                        <span class="parameter-desc">RGB color values (0-255)</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">time</span>
+                        <span class="parameter-desc">light duration (seconds)</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">mode</span>
+                        <span class="parameter-desc">1=steady, 2=off, 4=RGB cycle, 16=rainbow, 32=blink, 64=breathing</span>
+                    </div>
+                </div>
+                <div class="code-snippet">
+# Rainbow effect for 5 seconds
+drone.single_fly_lamplight(255, 255, 255, 5, 16)
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">plane_fly_generating(type, data, reserve)</div>
+                <div class="function-description">Control laser firing system for interactive applications.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">type</span>
+                        <span class="parameter-desc">0=single shot, 1=continuous fire, 2=enable receiver, 3=disable receiver, 4=unlimited fire, 5=disable firing</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">data</span>
+                        <span class="parameter-desc">continuous fire frequency (shots/second, range 1-14)</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">reserve</span>
+                        <span class="parameter-desc">ammunition count (range 1-255)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">plane_fly_laser_receiving()</div>
+                <div class="function-description">Detect laser hits on drone's receiver.</div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">True: hit detected, False: no hit</div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">Plane_cmd_electromagnet(type)</div>
+                <div class="function-description">Control external electromagnet accessory.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">type</span>
+                        <span class="parameter-desc">2=electromagnet attract, 3=electromagnet release</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">Plane_cmd_clamp(type, angle=0)</div>
+                <div class="function-description">Control external clamp and electromagnet system.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">type</span>
+                        <span class="parameter-desc">0=clamp close, 1=clamp open, 2=clamp angle, 3=electromagnet attract, 4=electromagnet release</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">angle</span>
+                        <span class="parameter-desc">clamp rotation angle (0-180 degrees)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">plane_fly_arm()</div>
+                <div class="function-description">Start low speed rotation of propellers for system preparation.</div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">plane_fly_disarm()</div>
+                <div class="function-description">Stop low speed rotation of propellers.</div>
+            </div>
+        </div>
+
+        <div id="media" class="section">
+            <div class="section-header">
+                📷 Camera & Media Operations
+            </div>
+
+            <div class="function">
+                <div class="function-name">Plane_cmd_swith_rtp(type) <span class="badge">Essential</span></div>
+                <div class="function-description">Enable or disable video streaming from drone camera.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">type</span>
+                        <span class="parameter-desc">0=enable video stream, 1=disable video stream</span>
+                    </div>
+                </div>
+                <div class="code-snippet">
+# Enable video streaming
+drone.Plane_cmd_swith_rtp(0)
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">get_image_array()</div>
+                <div class="function-description">Capture current frame from video stream as numpy array for processing.</div>
+                <div class="returns">
+                    <h4>Returns:</h4>
+                    <div class="return-value">numpy.ndarray or None - current video frame</div>
+                </div>
+                <div class="code-snippet">
+import cv2
+frame = drone.get_image_array()
+if frame is not None:
+    cv2.imshow('Drone View', frame)
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">Plane_fly_take_photo()</div>
+                <div class="function-description">Capture still photo (requires active video stream).</div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">Plane_cmd_switch_video(type=0)</div>
+                <div class="function-description">Start or stop video recording.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">type</span>
+                        <span class="parameter-desc">0=start recording, 1=stop recording</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">single_fly_flip_rtp()</div>
+                <div class="function-description">Open video stream display (requires enabled video stream).</div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">Plane_cmd_camera_angle(type, data)</div>
+                <div class="function-description">Adjust main camera pitch angle for different viewing perspectives.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">type</span>
+                        <span class="parameter-desc">0=up, 1=down (absolute), 2-3=algorithm control, 4=calibration, 5-6=block relative</span>
+                    </div>
+                    <div class="parameter">
+                        <span class="parameter-name">data</span>
+                        <span class="parameter-desc">rotation angle (0-90 degrees)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">Plane_cmd_switch_QR(type)</div>
+                <div class="function-description">Enable or disable QR code positioning system.</div>
+                <div class="parameters">
+                    <h4>Parameters:</h4>
+                    <div class="parameter">
+                        <span class="parameter-name">type</span>
+                        <span class="parameter-desc">0=enable positioning QR code, 1=disable positioning QR code</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                💡 Usage Examples & Best Practices
+            </div>
+            
+            <div class="function">
+                <div class="function-name">Basic Flight Sequence</div>
+                <div class="code-snippet">
+# Complete flight example
+drone = UserApi()
+
+# Connect and takeoff
+if drone.connect():
+    print("✅ Connected!")
+    
+    # Takeoff with green LED
+    drone.single_fly_takeoff({'r':0,'g':255,'b':0,'mode':1})
+    
+    # Enable video stream
+    drone.Plane_cmd_swith_rtp(0)
+    
+    # Curved flight path
+    drone.single_fly_curvilinearFlight(100, 50, 30, True)
+    
+    # Hover for 3 seconds
+    drone.single_fly_hover_flight(3)
+    
+    # Land with red LED
+    drone.single_fly_touchdown({'r':255,'g':0,'b':0,'mode':32})
+                </div>
+            </div>
+
+            <div class="function">
+                <div class="function-name">Real-time Monitoring</div>
+                <div class="code-snippet">
+import time
+
+# Monitor drone status
+while True:
+    battery = drone.get_battery()
+    pos = drone.get_coordinate()
+    height = drone.get_plane_distance()
+    
+    print(f"Battery: {battery}% | Position: {pos} | Height: {height}cm")
+    
+    if battery < 20:
+        print("⚠️ Low battery - initiating emergency landing")
+        drone.single_fly_touchdown()
+        break
+        
+    time.sleep(1)
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.9); border-radius: 10px;">
+            <p style="color: #666; font-size: 0.9em;">
+                📚 Pyhula API Documentation | Last Updated: July 2025<br>
+                🚁 Complete drone control, computer vision, and sensor integration
+            </p>
+        </div>
+    </div>
+</body>
+</html>
