@@ -1,5 +1,3 @@
-import pyhula
-
 class Light:
     class Modes:
         STEADY = 1
@@ -18,21 +16,33 @@ class Light:
         MAGENTA = (255, 0, 255)
         WHITE = (255, 255, 255)
 
-    def __init__(self, colour=Colours.GREEN):
-        self.colour = colour
+    def __init__(self, colour=None):
+        if colour is None:
+            colour = self.Colours.GREEN
+        self.colour = {
+            'r': colour[0],
+            'g': colour[1], 
+            'b': colour[2],
+            'mode': self.Modes.STEADY
+        }
 
-    def set_colour(self, r:int, g:int, b:int, mode=1):
-        self.colour['r'] = r
-        self.colour['g'] = g
-        self.colour['b'] = b
-        self.colour['mode'] = mode
+    def set_colour(self, colour_tuple=None, r=None, g=None, b=None, mode=None):
+        if colour_tuple is not None:
+            self.colour['r'] = colour_tuple[0]
+            self.colour['g'] = colour_tuple[1]
+            self.colour['b'] = colour_tuple[2]
+        elif r is not None and g is not None and b is not None:
+            self.colour['r'] = r
+            self.colour['g'] = g
+            self.colour['b'] = b
+        
+        if mode is not None:
+            self.colour['mode'] = mode
 
-        pyhula.UserApi().set_light(self.colour)
         print(f"Light set to colour: {self.colour}")
 
-    def set_mode(self, mode: 'Light.Modes'):
+    def set_mode(self, mode):
         self.colour['mode'] = mode
-        pyhula.UserApi().set_light(self.colour)
         print(f"Light mode set to: {mode}")
 
     def get_dict(self):
