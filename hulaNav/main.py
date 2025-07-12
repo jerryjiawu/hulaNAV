@@ -1,4 +1,4 @@
-from hulaNav import Drone
+from hulaNav.hulaNav import Drone
 
 def main():
     drone = Drone()
